@@ -1,61 +1,68 @@
-# WClicker — Autoclicker для Wayland (Hyprland)
+# 🖱 WClicker — Wayland Autoclicker
 
-Аналог XClicker, але для Wayland. Використовує `ydotool` для симуляції кліків миші.
+Fast GTK4 autoclicker for Wayland (Hyprland). Uses `/dev/uinput` directly — no X11, no ydotool required.
 
-## Залежності
+![screenshot](screenshot.png)
+
+## Features
+
+- Configurable click interval (ms)
+- Random interval variation ± N ms (to avoid bot detection)
+- Left / Middle / Right mouse button
+- Click types: Single / Double / Hold
+- Hold duration control
+- Repeat limit (or infinite)
+- CPS counter in real time
+- CLI commands for hotkey integration
+
+## Dependencies
 
 ```bash
 # Arch / Manjaro
-sudo pacman -S gtk4 ydotool
+sudo pacman -S gtk4
 
 # Ubuntu / Debian
-sudo apt install libgtk-4-dev ydotool
+sudo apt install libgtk-4-dev
 ```
 
-## Запуск ydotoold (демон)
+Make sure your user is in the `input` group:
 
 ```bash
-# Один раз вручну:
-sudo ydotoold &
-
-# Або через systemd (рекомендовано):
-sudo systemctl enable --now ydotool
+sudo usermod -aG input $USER
+# then re-login
 ```
 
-> **Увага:** `ydotoold` потрібен щоб `ydotool` міг інжектити події без root.
-> Після `systemctl enable` більше не потрібно sudo для wclicker.
-
-## Збірка
+## Build
 
 ```bash
 make
 ```
 
-## Запуск
+## Install (optional)
 
 ```bash
-./wclicker
+sudo make install
 ```
 
-## Hotkey (F6 для старт/стоп)
+## Usage
 
-Додай в `~/.config/hypr/hyprland.conf`:
+```bash
+./wclicker          # launch GUI
+./wclicker toggle   # toggle start/stop
+./wclicker start    # start clicking
+./wclicker pause    # stop clicking
+```
+
+## Hotkey (Hyprland)
+
+Add to `~/.config/hypr/hyprland.conf`:
 
 ```
-bind = , F6, exec, pkill -SIGUSR1 wclicker
+bind = , F6, exec, wclicker toggle
 ```
 
-Після цього `hyprctl reload` і F6 буде тоглити автоклікер.
+Then reload: `hyprctl reload`
 
-## Функції
+## License
 
-- Інтервал між кліками (мс)
-- Рандомізація інтервалу ±N мс
-- Вибір кнопки: Ліва / Середня / Права
-- Тип кліку: Одинарний / Подвійний / Утримання
-- Час утримання для режиму Hold
-- Обмеження кількості повторів (0 = нескінченно)
-- Клік у фіксовану позицію (X/Y координати)
-- GTK4 GUI
-- Hotkey через SIGUSR1 (F6 в Hyprland)
-- Лічильник кліків і CPS в реальному часі
+MIT
