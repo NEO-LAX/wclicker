@@ -65,4 +65,4 @@ Then reload: `hyprctl reload`
 
 ## License
 
-MIT
+GPL 3.0
